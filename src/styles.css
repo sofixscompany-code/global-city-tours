@@ -154,9 +154,12 @@ a.topbar__item:hover{color:#fff}
   transition:box-shadow .3s var(--ease),background .3s;
 }
 .header.is-stuck{box-shadow:0 10px 34px rgba(10,42,107,.12)}
-.header__inner{display:flex;align-items:center;gap:20px;height:var(--header-h)}
+.header__inner{display:flex;align-items:center;gap:16px;height:var(--header-h)}
 
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
+/* flex:0 0 auto, NOT min-width:0 — the brand must never shrink below its
+   nowrap text width. With min-width:0 it was the only squeezable item, so it
+   absorbed the whole header overflow and its text spilled onto the nav. */
+.brand{display:flex;align-items:center;gap:12px;flex:0 0 auto}
 .brand__mark{width:52px;height:46px;flex:0 0 auto;filter:drop-shadow(0 6px 12px rgba(15,98,198,.25));transition:transform .4s var(--ease)}
 .brand:hover .brand__mark{transform:rotate(-6deg) scale(1.05)}
 .brand__text{display:flex;flex-direction:column;line-height:1}
@@ -182,20 +185,25 @@ a.topbar__item:hover{color:#fff}
 .brand--light .brand__name em{color:var(--green-400)}
 .brand--light .brand__sub{color:#9fc9f5}
 
-.nav{display:flex;align-items:center;gap:24px;margin-left:auto}
+.nav{display:flex;align-items:center;gap:18px;margin-left:auto}
 .nav__head,.nav__foot{display:none}
 .nav__list{display:flex;align-items:center;gap:4px}
 .nav__link{
-  position:relative;display:block;padding:9px 13px;border-radius:8px;
+  position:relative;display:block;padding:9px 11px;border-radius:8px;white-space:nowrap;
   font-size:.9rem;font-weight:500;color:var(--ink-2);transition:color .2s,background .2s;
 }
 .nav__link::after{
-  content:"";position:absolute;left:13px;right:13px;bottom:3px;height:2.5px;border-radius:3px;
+  content:"";position:absolute;left:11px;right:11px;bottom:3px;height:2.5px;border-radius:3px;
   background:var(--grad-green);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
 }
 .nav__link:hover{color:var(--blue-700)}
 .nav__link:hover::after,.nav__link.is-active::after{transform:scaleX(1)}
 .nav__link.is-active{color:var(--blue-700);font-weight:600}
+
+/* In the narrow band where the inline nav still shows but the container is
+   under-sized, drop the nav's "Book Now" pill — the header already has call
+   and WhatsApp buttons. The mobile drawer (<1180px) keeps its own CTA. */
+@media (min-width:1181px) and (max-width:1240px){.nav__cta{display:none}}
 
 .header__actions{display:flex;align-items:center;gap:10px}
 /* The header sits on white, so the call button needs ink colours —
@@ -657,6 +665,12 @@ a.topbar__item:hover{color:#fff}
 .footer__bottom{border-top:1px solid rgba(255,255,255,.1);padding:20px 0}
 .footer__bottom-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.8rem}
 .footer__bottom p{margin:0}
+.footer__credit{color:#9fbde3}
+.footer__credit a{
+  color:var(--green-400);font-weight:600;text-decoration:none;
+  border-bottom:1px solid rgba(80,214,144,.35);transition:color .2s,border-color .2s;
+}
+.footer__credit a:hover{color:#7ce6ac;border-bottom-color:var(--green-400)}
 
 /* ---------- Floating actions ---------- */
 .floats{position:fixed;right:22px;bottom:22px;z-index:700;display:flex;flex-direction:column;gap:12px}
@@ -795,7 +809,9 @@ a.topbar__item:hover{color:#fff}
   .nav.is-open .nav__cta{animation-delay:.42s}
   .nav.is-open .nav__foot{animation-delay:.48s}
   @keyframes drawerIn{to{opacity:1;transform:none}}
-  .burger{display:inline-flex;position:relative;z-index:860}
+  /* Below the drawer's 850 so, when open, the drawer's own close button is the
+     only X visible — at 860 the burger poked above it and duplicated it. */
+  .burger{display:inline-flex;position:relative;z-index:840}
   .header__call span{display:none}
   .header__call{padding:0;width:44px;height:44px;justify-content:center}
 
@@ -1075,15 +1091,11 @@ a.topbar__item:hover{color:#fff}
 .float--pdf{background:#fff;color:var(--blue-800);box-shadow:var(--shadow)}
 .float--pdf:hover{background:var(--blue-50)}
 
-/* --- Header brochure pill --- */
-.header__pdf{
-  display:inline-flex;align-items:center;gap:7px;
-  color:var(--blue-700);font-weight:600;font-size:.86rem;font-family:inherit;
-  padding:8px 14px;border-radius:999px;background:var(--blue-50);
-  border:1px solid rgba(15,98,198,.18);cursor:pointer;transition:.25s var(--ease);white-space:nowrap;
-}
-.header__pdf:hover{background:var(--blue-100);transform:translateY(-1px)}
-@media (max-width:1120px){.header__pdf{display:none}}
+/* --- Header brochure pill ---
+   Hidden in the sticky header: brand + 7 links + "Book Now" + call/WhatsApp
+   already exceed the 1220px container, so this pill could never fit. The
+   brochure stays reachable via the floating button, the hero CTA and contact. */
+.header__pdf{display:none}
 
 /* --- WhatsApp book buttons on cards --- */
 .dest__wa{

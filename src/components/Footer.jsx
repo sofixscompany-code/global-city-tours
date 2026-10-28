@@ -121,9 +121,15 @@ export default function Footer() {
       <div className="footer__bottom">
         <div className="container footer__bottom-inner">
           <p>
-            © {year} {company.name}. All rights reserved.
+            © {year} {company.name} All rights reserved.
           </p>
-          <p>Kathmandu, Nepal · {company.tagline}</p>
+          <p>
+            Kathmandu, Nepal · {company.tagline}
+            <span className="footer__credit">
+              {' '}· Powered by{' '}
+              <a href="https://sofixs.com" target="_blank" rel="noopener noreferrer">Sofixs</a>
+            </span>
+          </p>
         </div>
       </div>
     </footer>
