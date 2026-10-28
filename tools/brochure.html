@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Global City Tours and Travels — Brochure</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #12305c; }
+
+  .page {
+    width: 210mm; height: 297mm;
+    position: relative; overflow: hidden;
+    page-break-after: always;
+    background: #ffffff;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ---------- COVER ---------- */
+  .cover { color: #fff; }
+  .cover__photo { position: absolute; inset: 0; }
+  .cover__photo img { width: 100%; height: 100%; object-fit: cover; }
+  .cover__photo::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(4,26,64,.94) 12%, rgba(10,58,134,.82) 52%, rgba(15,98,198,.55) 100%);
+  }
+  .cover__inner {
+    position: relative; height: 100%;
+    padding: 26mm 20mm 18mm;
+    display: flex; flex-direction: column;
+  }
+  .cover__brand { display: flex; align-items: center; gap: 14px; }
+  .cover__brand img { width: 22mm; height: 20mm; }
+  .cover__brand b { font-size: 26pt; letter-spacing: .02em; line-height: 1; }
+  .cover__brand b em { font-style: normal; color: #6fe07e; }
+  .cover__brand small { display: block; font-size: 7.5pt; letter-spacing: .28em; color: #9fc9f5; margin-top: 5px; font-weight: 600; }
+  .cover__mid { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 150mm; }
+  .cover__kicker {
+    font-family: "Segoe Print", "Segoe Script", cursive;
+    font-size: 20pt; color: #6fe07e; transform: rotate(-2deg); margin-bottom: 6mm;
+  }
+  .cover__title { font-size: 44pt; line-height: 1.08; font-weight: 800; letter-spacing: -.01em; }
+  .cover__title span { color: #6fe07e; }
+  .cover__lead { font-size: 12.5pt; line-height: 1.7; color: #d6e6fa; margin-top: 9mm; max-width: 135mm; }
+  .cover__chips { display: flex; flex-wrap: wrap; gap: 3mm; margin-top: 10mm; }
+  .cover__chips span {
+    border: 1px solid rgba(255,255,255,.4); border-radius: 99px;
+    padding: 2mm 5mm; font-size: 9pt; background: rgba(255,255,255,.1);
+  }
+  .cover__foot {
+    border-top: 1px solid rgba(255,255,255,.28);
+    padding-top: 6mm; display: flex; justify-content: space-between; font-size: 9.5pt; color: #cfe0f6;
+  }
+  .cover__foot b { color: #fff; }
+
+  /* ---------- INNER PAGES ---------- */
+  .inner { padding: 16mm 18mm 20mm; }
+  .phead { display: flex; align-items: center; gap: 10px; border-bottom: 3px solid #1fae4a; padding-bottom: 4mm; margin-bottom: 9mm; }
+  .phead img { width: 13mm; height: 12mm; }
+  .phead b { font-size: 13pt; color: #0a3a86; }
+  .phead span { margin-left: auto; font-family: "Segoe Print", cursive; color: #12913f; font-size: 12pt; transform: rotate(-2deg); }
+
+  h2.sec { font-size: 19pt; color: #0a2a6b; margin-bottom: 2mm; }
+  p.sub { font-size: 10pt; color: #5b6b82; margin-bottom: 7mm; line-height: 1.6; }
+
+  .svc { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .svc article { border: 1px solid #dbe6f3; border-radius: 4mm; padding: 5mm; }
+  .svc article i {
+    display: inline-grid; place-items: center; width: 10mm; height: 10mm; border-radius: 3mm;
+    background: #e8f1fd; color: #0f62c6; font-style: normal; font-size: 13pt; margin-bottom: 3mm;
+  }
+  .svc article h3 { font-size: 11pt; color: #0a2a6b; margin-bottom: 2mm; }
+  .svc article p { font-size: 8.8pt; color: #5b6b82; line-height: 1.55; }
+
+  .airlines { margin-top: 9mm; }
+  .airlines h3 { font-size: 12pt; color: #0a2a6b; margin-bottom: 3mm; }
+  .airline-chips { display: flex; flex-wrap: wrap; gap: 2.4mm; }
+  .airline-chips span {
+    border: 1px solid #dbe6f3; border-radius: 99px; padding: 1.6mm 4mm;
+    font-size: 8.6pt; color: #12305c; background: #f6faff;
+  }
+  .airline-chips span.dom { border-color: #bfe6c9; background: #f0fbf2; color: #0b7a38; }
+
+  .dests { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; }
+  .dests figure { border-radius: 4mm; overflow: hidden; border: 1px solid #dbe6f3; }
+  .dests figure img { width: 100%; height: 24mm; object-fit: cover; display: block; }
+  .dests figcaption { padding: 2.5mm 3mm; font-size: 8.6pt; font-weight: 700; color: #0a2a6b; }
+  .dests figcaption small { display: block; font-weight: 400; color: #66768e; font-size: 7.4pt; margin-top: .6mm; }
+
+  .pkgs { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 8mm; }
+  .pkgs article { border: 1px solid #dbe6f3; border-left: 4px solid #1fae4a; border-radius: 3mm; padding: 4.5mm 5mm; }
+  .pkgs h3 { font-size: 10.5pt; color: #0a2a6b; margin-bottom: 1.5mm; }
+  .pkgs em { font-style: normal; font-size: 8pt; color: #12913f; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .pkgs ul { margin: 2.5mm 0 0 4mm; font-size: 8.6pt; color: #5b6b82; line-height: 1.6; }
+
+  .contact { margin-top: 9mm; display: flex; gap: 8mm; align-items: center; }
+  .contact__info { flex: 1; }
+  .contact__info h2 { font-size: 17pt; color: #0a2a6b; margin-bottom: 3mm; }
+  .contact__info p { font-size: 10pt; color: #5b6b82; line-height: 1.9; }
+  .contact__info p b { color: #12305c; }
+  .contact__qr { text-align: center; font-size: 8pt; color: #5b6b82; }
+  .contact__qr img { width: 34mm; height: 34mm; display: block; margin-bottom: 2mm; border: 1px solid #dbe6f3; border-radius: 3mm; }
+
+  .pfoot {
+    position: absolute; left: 18mm; right: 18mm; bottom: 10mm;
+    border-top: 1px solid #dbe6f3; padding-top: 3mm;
+    display: flex; justify-content: space-between; font-size: 8pt; color: #8496ad;
+  }
+  .pfoot b { color: #0a3a86; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — COVER -->
+<section class="page cover">
+  <div class="cover__photo">
+    <img src="../public/images/nepal-himalaya-sunset.jpg" alt="">
+  </div>
+  <div class="cover__inner">
+    <div class="cover__brand">
+      <img src="../public/assets/logo.svg" alt="">
+      <div>
+        <b>GL<em>CITY</em></b>
+        <small>TOURS AND TRAVELS PVT. LTD.</small>
+      </div>
+    </div>
+    <div class="cover__mid">
+      <div class="cover__kicker">your journey, our promise ✈</div>
+      <h1 class="cover__title">Travel <span>Beyond</span><br>Boundaries</h1>
+      <p class="cover__lead">
+        Domestic &amp; international air ticketing · hotel booking · holiday &amp; tour
+        packages · cargo and courier — a complete travel service from the heart of
+        Kathmandu, trusted by hundreds of travellers.
+      </p>
+      <div class="cover__chips">
+        <span>20+ Airline Partners</span>
+        <span>12+ Destinations</span>
+        <span>6 Core Services</span>
+        <span>Cargo &amp; Courier</span>
+      </div>
+    </div>
+    <div class="cover__foot">
+      <span>Gokarneshwor-8, Attarkhel, <b>Kathmandu, Nepal</b></span>
+      <span><b>+977 9851150530</b> · +977 9851450530</span>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 2 — SERVICES + AIRLINES -->
+<section class="page inner">
+  <div class="phead">
+    <img src="../public/assets/logo.svg" alt="">
+    <b>Global City Tours and Travels Pvt. Ltd.</b>
+    <span>what we do</span>
+  </div>
+
+  <h2 class="sec">Everything travel, under one roof</h2>
+  <p class="sub">One call handles your tickets, hotels, itinerary, safari, pilgrimage — and even the cargo at the other end.</p>
+
+  <div class="svc">
+    <article><i>✈</i><h3>Domestic &amp; International Air Ticketing</h3><p>Instant bookings across 6 domestic and 14 international carriers, with fare comparison, group discounts and 24×7 re-issue support.</p></article>
+    <article><i>🏨</i><h3>Hotel Booking</h3><p>Budget guesthouses to 5-star stays, in Nepal and worldwide. Handpicked properties, confirmed vouchers and best-rate matching.</p></article>
+    <article><i>📦</i><h3>Cargo and Courier Service</h3><p>Air cargo and courier movement to and from Nepal with secure handling, door-to-door pickup and real-time shipment updates.</p></article>
+    <article><i>🧳</i><h3>Holiday Packages</h3><p>Ready-to-go holidays for couples, families and groups — flights, hotels, sightseeing and meals bundled into one simple price.</p></article>
+    <article><i>🗺</i><h3>All Types of Tour Packages</h3><p>Adventure, pilgrimage, wildlife, honeymoon and corporate tours — designed around your dates, budget and travel style.</p></article>
+    <article><i>🌏</i><h3>Domestic &amp; International Travel Service</h3><p>Visa assistance, airport transfers, travel insurance, SIM cards and itinerary planning — a complete door-to-door travel service.</p></article>
+  </div>
+
+  <div class="airlines">
+    <h3>Airline Partners — compare fares across all of them in one call</h3>
+    <div class="airline-chips">
+      <span class="dom">Tara Air</span><span class="dom">Buddha Air</span><span class="dom">Shree Airlines</span>
+      <span class="dom">Yeti Airlines</span><span class="dom">Sita Air</span><span class="dom">Saurya Airlines</span>
+      <span>Qatar Airways</span><span>Emirates</span><span>Nepal Airlines</span><span>Thai Airways</span>
+      <span>Himalaya Airlines</span><span>flydubai</span><span>Malaysia Airlines</span><span>Air India</span>
+      <span>Air Arabia</span><span>Jazeera Airways</span><span>IndiGo</span><span>Singapore Airlines</span>
+      <span>Kuwait Airways</span><span>Oman Air</span>
+    </div>
+  </div>
+
+  <div class="pfoot"><span><b>Travel Beyond Boundaries.</b></span><span>globalcitytraveltours@gmail.com · www.globalcitytours.com.np</span></div>
+</section>
+
+<!-- PAGE 3 — DESTINATIONS + PACKAGES + CONTACT -->
+<section class="page inner">
+  <div class="phead">
+    <img src="../public/assets/logo.svg" alt="">
+    <b>Global City Tours and Travels Pvt. Ltd.</b>
+    <span>where we send you</span>
+  </div>
+
+  <h2 class="sec">Popular Destinations</h2>
+  <p class="sub">Short hops to Pokhara and Chitwan, or long-haul escapes to Dubai, Bangkok, Seoul and beyond.</p>
+
+  <div class="dests">
+    <figure><img src="../public/images/dest-dubai.jpg"><figcaption>Dubai<small>United Arab Emirates</small></figcaption></figure>
+    <figure><img src="../public/images/dest-thailand.jpg"><figcaption>Thailand<small>Bangkok &amp; Phuket</small></figcaption></figure>
+    <figure><img src="../public/images/dest-korea.jpg"><figcaption>Korea<small>Seoul &amp; Beyond</small></figcaption></figure>
+    <figure><img src="../public/images/dest-bahrain.jpg"><figcaption>Bahrain<small>Manama</small></figcaption></figure>
+    <figure><img src="../public/images/dest-usa.jpg"><figcaption>USA<small>New York &amp; Beyond</small></figcaption></figure>
+    <figure><img src="../public/images/dest-uk.jpg"><figcaption>UK<small>London</small></figcaption></figure>
+    <figure><img src="../public/images/dest-china.jpg"><figcaption>China<small>Shanghai &amp; Beyond</small></figcaption></figure>
+    <figure><img src="../public/images/dest-india.jpg"><figcaption>India<small>Agra, Delhi &amp; More</small></figcaption></figure>
+    <figure><img src="../public/images/dest-japan.jpg"><figcaption>Japan<small>Tokyo &amp; Kyoto</small></figcaption></figure>
+    <figure><img src="../public/images/dest-qatar.jpg"><figcaption>Qatar<small>Doha</small></figcaption></figure>
+    <figure><img src="../public/images/dest-malaysia.jpg"><figcaption>Malaysia<small>Kuala Lumpur</small></figcaption></figure>
+    <figure><img src="../public/images/dest-singapore.jpg"><figcaption>Singapore<small>Garden City</small></figcaption></figure>
+  </div>
+
+  <div class="pkgs">
+    <article><em>International</em><h3>USA Discovery</h3><ul><li>Air ticketing from Kathmandu</li><li>Hotels with daily breakfast</li><li>City tours &amp; transfers</li></ul></article>
+    <article><em>Most Booked</em><h3>Dubai Escapade</h3><ul><li>Desert safari &amp; Dhow cruise</li><li>Burj Khalifa tour</li><li>4★ hotel + transfers</li></ul></article>
+    <article><em>Nepal</em><h3>Pokhara &amp; Sarangkot</h3><ul><li>Sarangkot sunrise, Phewa boating</li><li>3N / 4D · Family</li></ul></article>
+    <article><em>Nepal</em><h3>Chitwan Wildlife Safari</h3><ul><li>Jungle safari &amp; canoe ride</li><li>2N / 3D · Full board resort</li></ul></article>
+  </div>
+
+  <div class="contact">
+    <div class="contact__info">
+      <h2>Book in one message</h2>
+      <p>
+        <b>Office:</b> Gokarneshwor-8, Attarkhel, Kathmandu<br>
+        <b>Phone:</b> +977 9851150530 / +977 9851450530<br>
+        <b>Email:</b> globalcitytraveltours@gmail.com<br>
+        <b>Hours:</b> Sunday – Friday, 9:00 AM – 6:00 PM
+      </p>
+    </div>
+    <div class="contact__qr">
+      <img src="../public/images/whatsapp-qr.png" alt="">
+      Scan to book on WhatsApp
+    </div>
+  </div>
+
+  <div class="pfoot"><span><b>Travel Beyond Boundaries.</b></span><span>Page 3 of 3 · Global City Tours and Travels Pvt. Ltd.</span></div>
+</section>
+
+</body>
+</html>

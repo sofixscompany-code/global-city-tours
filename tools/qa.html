@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Responsive QA harness</title>
+<style>body{font:14px sans-serif;margin:12px}iframe{border:2px solid #999;display:block;margin-bottom:14px;background:#fff}</style>
+</head>
+<body>
+<h3>Responsive QA — all common device widths</h3>
+<div id="frames"></div>
+<script>
+const widths = [320, 360, 390, 414, 480, 640, 768, 820, 912, 1024, 1280, 1440, 1920];
+const box = document.getElementById('frames');
+window.results = null;
+let loaded = 0;
+widths.forEach(w => {
+  const f = document.createElement('iframe');
+  f.width = w; f.height = 560;
+  f.style.width = w + 'px';
+  f.setAttribute('data-w', w);
+  f.src = '/';
+  f.addEventListener('load', () => {
+    loaded++;
+    if (loaded === widths.length) setTimeout(measure, 900);
+  });
+  box.appendChild(f);
+});
+function measure() {
+  const out = [];
+  document.querySelectorAll('iframe').forEach((f) => {
+    const w = Number(f.getAttribute('data-w'));
+    const d = f.contentDocument;
+    if (!d) return;
+    const cs = s => d.defaultView.getComputedStyle(d.querySelector(s));
+    const doc = d.documentElement;
+    // find any element wider than the viewport
+    const vw = d.defaultView.innerWidth;
+    const over = [];
+    d.querySelectorAll('body *').forEach(el => {
+      // the off-canvas mobile nav sits off-screen by design
+      if (el.closest('.nav') && !d.querySelector('.nav.is-open')) return;
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && (r.right > vw + 2 || r.left < -2)) {
+        const cls = (el.className && String(el.className).split(' ')[0]) || el.tagName;
+        if (over.length < 6) over.push(cls + '@' + Math.round(r.left) + '..' + Math.round(r.right));
+      }
+    });
+    out.push({
+      width: w,
+      burger: cs('.burger').display,
+      navPosition: cs('.nav').position,
+      grid4: cs('.grid--4').gridTemplateColumns.split(' ').filter(Boolean).length,
+      grid3: cs('.grid--3').gridTemplateColumns.split(' ').filter(Boolean).length,
+      fieldRow: cs('.field-row').gridTemplateColumns.split(' ').filter(Boolean).length,
+      heroTitle: cs('.hero__title').fontSize,
+      hOverflow: doc.scrollWidth - doc.clientWidth,
+      overflowingEls: over
+    });
+  });
+  window.results = out;
+}
+</script>
+</body></html>

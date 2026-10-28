@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global City Tours and Travels Pvt. Ltd. | Travel Beyond Boundaries</title>
+    <meta
+      name="description"
+      content="Global City Tours and Travels Pvt. Ltd. — Gokarneshwor-8, Attarkhel, Kathmandu. Domestic & international air ticketing, hotel booking, cargo & courier, holiday & tour packages. 20+ airline partners."
+    />
+    <meta
+      name="keywords"
+      content="air ticketing Kathmandu, Nepal travel agency, domestic airlines Nepal, international flight booking, hotel booking, holiday packages, cargo service Kathmandu"
+    />
+    <meta name="author" content="Global City Tours and Travels Pvt. Ltd." />
+    <meta name="theme-color" content="#0a3a86" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Global City Tours and Travels Pvt. Ltd." />
+    <meta
+      property="og:description"
+      content="Travel Beyond Boundaries. Domestic & international air ticketing, hotels, tour packages and cargo — from Kathmandu to the world."
+    />
+    <meta property="og:image" content="/assets/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Fraunces draws the headline and Poppins draws the hero body — both are
+      above the fold. Preloading the stylesheet makes the browser fetch it at
+      high priority, and the print-media swap below applies it the instant it
+      lands. Together with the static shell's font-family match, this keeps the
+      headline from re-flowing when the webfont arrives (CLS 0) without ever
+      blocking first paint.
+    -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Poppins:wght@400;500;600;700;800&display=swap"
+      onload="this.rel='stylesheet'"
+    />
+    <!-- Fonts load async (print-media swap) so they never block first paint -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,800&family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all';this.onload=null"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+  </head>
+  <body>
+    <!--
+      Static shell: paints instantly (brand + headline) while the JS bundle
+      downloads. React replaces it as soon as it mounts.
+    -->
+    <div id="root">
+      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#04204d;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:24px">
+        <img src="/assets/logo.svg" alt="" width="64" height="56" style="filter:drop-shadow(0 6px 12px rgba(15,98,198,.35))" />
+        <h1 style="margin:0;font-size:clamp(1.8rem,6vw,3rem);font-weight:800;letter-spacing:-.02em;font-family:'Fraunces',Georgia,serif">
+          Travel <span style="color:#3ecf4a">Beyond</span> Boundaries
+        </h1>
+        <p style="margin:0;color:#cfe0f6;font-size:.95rem">
+          Global City Tours and Travels Pvt. Ltd. — Kathmandu
+        </p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
