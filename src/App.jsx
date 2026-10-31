@@ -24,10 +24,16 @@ export default function App() {
       <PdfPreviewProvider>
         <IconDefs />
 
+        {/* First focusable element on the page — the stylesheet already had a
+            .skip-link rule waiting for it. */}
+        <a className="skip-link" href="#main">
+          Skip to main content
+        </a>
+
         <TopBar />
         <Header activeSection={activeSection} />
 
-        <main>
+        <main id="main">
           <Hero />
           <Ticker />
           <BelowFold />

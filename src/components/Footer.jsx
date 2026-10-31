@@ -1,5 +1,5 @@
 import { company, navLinks, services, destinations } from '../data/site.js'
-import { BrandMark, Icon } from './Icon.jsx'
+import { Icon } from './Icon.jsx'
 import { usePdfPreview } from './PdfPreview.jsx'
 
 export default function Footer() {
@@ -11,15 +11,19 @@ export default function Footer() {
       <div className="footer__top">
         <div className="container footer__grid">
           <div className="footer__col">
-            <a className="brand brand--light" href="#home">
-              <BrandMark title={company.name} />
-              <span className="brand__text">
-                <span className="brand__name">
-                  GL<span className="brand__globe" aria-hidden="true" />
-                  BAL <em>CITY</em>
-                </span>
-                <span className="brand__sub">TOURS AND TRAVELS PVT.LTD.</span>
-              </span>
+            <a className="brand brand--footer" href="#home">
+              {/* The full lockup (emblem + wordmark) on its white ground —
+                  on the navy footer a transparent version would show the page
+                  colour through the globe. */}
+              <img
+                className="footer__logo"
+                src="/assets/logo.jpg"
+                alt={company.name}
+                width={560}
+                height={481}
+                loading="lazy"
+                decoding="async"
+              />
             </a>
             <p className="footer__about">
               A full-service travel company in Kathmandu — air ticketing, hotels, tours, holiday
@@ -92,7 +96,7 @@ export default function Footer() {
                 <Icon name="pin" />
                 <span>
                   {company.addressLines[0]}
-                  <br />
+                  <br />{' '}
                   {company.addressLines[1]}
                 </span>
               </li>

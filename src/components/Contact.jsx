@@ -114,6 +114,7 @@ export default function Contact() {
                   <Icon name="pin" />
                   <div>
                     <small>Address</small>
+                    {' '}
                     <span>{company.addressLines.join(', ')}</span>
                   </div>
                 </li>
@@ -121,7 +122,9 @@ export default function Contact() {
                   <Icon name="phone" />
                   <div>
                     <small>Phone</small>
+                    {' '}
                     <a href={`tel:+${company.phoneRaw[0]}`}>{company.phones[0]}</a>
+                    {' '}
                     <a href={`tel:+${company.phoneRaw[1]}`}>{company.phones[1]}</a>
                   </div>
                 </li>
@@ -129,6 +132,7 @@ export default function Contact() {
                   <Icon name="mail" />
                   <div>
                     <small>Email</small>
+                    {' '}
                     <a href={`mailto:${company.email}`}>{company.email}</a>
                   </div>
                 </li>
@@ -136,6 +140,7 @@ export default function Contact() {
                   <Icon name="clock" />
                   <div>
                     <small>Office Hours</small>
+                    {' '}
                     <span>{company.hours}</span>
                   </div>
                 </li>

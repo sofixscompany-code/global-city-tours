@@ -11,11 +11,25 @@ export function Icon({ name, className = 'ico', ...rest }) {
   )
 }
 
+/**
+ * The official Global City emblem, background knocked out so it sits on the
+ * translucent header without a visible rectangle. width/height are declared so
+ * the browser reserves the box before the image lands (no CLS).
+ *
+ * On dark surfaces use `logo.jpg` instead — with no background the globe's
+ * white interior would show the dark colour through it.
+ */
 export function BrandMark({ className = 'brand__mark', title }) {
   return (
-    <svg className={className} viewBox="0 0 240 210" role="img" aria-label={title}>
-      <use href="#gc-mark" />
-    </svg>
+    <img
+      className={className}
+      src="/assets/logo-emblem.png"
+      alt={title}
+      width={240}
+      height={166}
+      decoding="async"
+      draggable="false"
+    />
   )
 }
 
@@ -28,61 +42,6 @@ export function IconDefs() {
       focusable="false"
     >
       <defs>
-        <linearGradient id="gcBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0a2a6b" />
-          <stop offset="55%" stopColor="#0f62c6" />
-          <stop offset="100%" stopColor="#2aa3ef" />
-        </linearGradient>
-        <linearGradient id="gcGreenGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#0b7a38" />
-          <stop offset="100%" stopColor="#3ecf4a" />
-        </linearGradient>
-        <linearGradient id="gcTailGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#0f62c6" />
-          <stop offset="60%" stopColor="#1e90e0" />
-          <stop offset="100%" stopColor="#2aa3ef" />
-        </linearGradient>
-        <clipPath id="gcGlobeClip">
-          <circle cx="100" cy="95" r="52" />
-        </clipPath>
-
-        {/* The Global City mark: an open "G" wrapped around a globe,
-            with a flight path sweeping out of it. */}
-        <symbol id="gc-mark" viewBox="0 0 240 210">
-          <path d="M20 143 C 30 190, 104 212, 172 176 C 112 197, 46 190, 20 143 Z" fill="url(#gcGreenGrad)" />
-          <path
-            d="M158.97 53.7 A72 72 0 1 0 158.97 136.3 L142.6 124.8 A52 52 0 1 1 142.6 65.2 Z"
-            fill="url(#gcBlueGrad)"
-          />
-          <circle cx="100" cy="95" r="52" fill="#f2f8ff" />
-          <g clipPath="url(#gcGlobeClip)" fill="#0f62c6" opacity=".92">
-            <path d="M64 62 C 76 54, 92 56, 96 64 C 100 72, 88 76, 82 74 C 74 82, 64 76, 64 68 Z" />
-            <path d="M84 82 C 94 78, 104 82, 106 90 C 108 100, 100 106, 96 118 C 92 130, 84 132, 82 124 C 80 114, 86 106, 82 96 Z" />
-            <path d="M112 60 C 126 56, 140 62, 142 70 C 143 78, 132 78, 128 74 C 120 80, 110 74, 110 68 Z" />
-            <path d="M118 88 C 130 84, 142 92, 140 102 C 138 110, 128 108, 126 100 C 122 96, 116 94, 118 88 Z" />
-            <path d="M118 118 C 128 114, 136 120, 132 126 C 128 132, 118 130, 118 124 Z" />
-          </g>
-          <g clipPath="url(#gcGlobeClip)" fill="none" stroke="#9cc8f0" strokeWidth="1.6" opacity=".85">
-            <ellipse cx="100" cy="95" rx="52" ry="20" />
-            <ellipse cx="100" cy="95" rx="52" ry="40" />
-            <ellipse cx="100" cy="95" rx="20" ry="52" />
-            <ellipse cx="100" cy="95" rx="40" ry="52" />
-            <line x1="48" y1="95" x2="152" y2="95" />
-            <line x1="100" y1="43" x2="100" y2="147" />
-          </g>
-          <circle cx="100" cy="95" r="52" fill="none" stroke="#0f62c6" strokeWidth="3" opacity=".55" />
-          <path
-            d="M36 152 C 96 130, 142 92, 188 42 C 193 37, 200 40, 197 47 C 152 98, 100 134, 44 162 Z"
-            fill="url(#gcTailGrad)"
-          />
-          <g transform="translate(196 30) rotate(-46) scale(2.6) translate(-12 -12)">
-            <path
-              d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"
-              fill="#0a2a6b"
-            />
-          </g>
-        </symbol>
-
         <symbol id="i-flight" viewBox="0 0 24 24">
           <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
         </symbol>

@@ -28,6 +28,7 @@ export default function TicketStrip() {
               <span className="ticket__label">{sector.label}</span>
               <h3 className="ticket__route">
                 {sector.route}
+                {' '}
                 <Icon name="flight" />
                 {sector.to}
               </h3>

@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Assets that help previews render
+Allow: /assets/
+Allow: /images/
+
+# Demo/test artefacts never ship
+Disallow: /ses_*.json
+
+# The brochure is linked, not crawled for content
+Allow: /assets/brochure.pdf
+
+Sitemap: https://global-city-tours.vercel.app/sitemap.xml

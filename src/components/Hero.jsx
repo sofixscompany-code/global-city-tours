@@ -150,12 +150,17 @@ export default function Hero() {
           </span>
 
           <h1 className="hero__title">
+            {/* The {' '} between words is whitespace-only, so the flex container
+                won't render it as an item — but it does land in textContent,
+                which is what search engines and screen readers read. */}
             <span className="hero__word">
               <span>Travel</span>
             </span>
+            {' '}
             <span className="hero__word">
               <span className="hero__title-accent">Beyond</span>
             </span>
+            {' '}
             <span className="hero__word">
               <span>Boundaries</span>
             </span>

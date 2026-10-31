@@ -160,7 +160,10 @@ a.topbar__item:hover{color:#fff}
    nowrap text width. With min-width:0 it was the only squeezable item, so it
    absorbed the whole header overflow and its text spilled onto the nav. */
 .brand{display:flex;align-items:center;gap:12px;flex:0 0 auto}
-.brand__mark{width:52px;height:46px;flex:0 0 auto;filter:drop-shadow(0 6px 12px rgba(15,98,198,.25));transition:transform .4s var(--ease)}
+/* The emblem is wider than the old SVG mark (the plane runs out to the right),
+   so it is sized by width with height:auto — the img's width/height attributes
+   already reserve the box, keeping CLS at zero. */
+.brand__mark{width:64px;height:auto;flex:0 0 auto;filter:drop-shadow(0 6px 12px rgba(15,98,198,.25));transition:transform .4s var(--ease)}
 .brand:hover .brand__mark{transform:rotate(-6deg) scale(1.05)}
 .brand__text{display:flex;flex-direction:column;line-height:1}
 .brand__name{
@@ -181,9 +184,6 @@ a.topbar__item:hover{color:#fff}
     linear-gradient(0deg,transparent 46%,rgba(255,255,255,.6) 46%,rgba(255,255,255,.6) 54%,transparent 54%);
 }
 .brand__sub{font-size:.56rem;letter-spacing:.24em;font-weight:600;color:var(--blue-600);margin-top:5px;white-space:nowrap}
-.brand--light .brand__name{color:#fff}
-.brand--light .brand__name em{color:var(--green-400)}
-.brand--light .brand__sub{color:#9fc9f5}
 
 .nav{display:flex;align-items:center;gap:18px;margin-left:auto}
 .nav__head,.nav__foot{display:none}
@@ -638,6 +638,11 @@ a.topbar__item:hover{color:#fff}
 
 /* ---------- Footer ---------- */
 .footer{background:var(--blue-950);color:#9fbde3}
+/* The logo ships on white, so on the navy it reads as a sticker — padding goes
+   on the anchor (a normal box) rather than the img, keeping height:auto exact. */
+.brand--footer{background:#fff;padding:12px 14px;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.3);transition:transform .35s var(--ease)}
+.brand--footer:hover{transform:translateY(-3px) rotate(-1.4deg)}
+.footer__logo{display:block;width:170px;height:auto}
 .footer__top{padding:72px 0 52px}
 .footer__grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1.25fr;gap:38px}
 .footer__col h4{color:#fff;font-size:.95rem;letter-spacing:.04em;margin-bottom:18px;position:relative;padding-bottom:12px}
@@ -843,7 +848,7 @@ a.topbar__item:hover{color:#fff}
   .topbar__inner{justify-content:center;min-height:38px;font-size:.78rem}
   .topbar__group--end{margin-left:0}
   .brand__name{font-size:1.16rem}
-  .brand__mark{width:44px;height:40px}
+  .brand__mark{width:52px;height:auto}
   .brand__sub{font-size:.48rem;letter-spacing:.18em}
   .hero{padding:56px 0 100px}
   .hero__title{font-size:2.1rem}
