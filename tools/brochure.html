@@ -30,7 +30,9 @@
     display: flex; flex-direction: column;
   }
   .cover__brand { display: flex; align-items: center; gap: 14px; }
-  .cover__brand img { width: 22mm; height: 20mm; }
+  /* Full lockup on white — the cover is a dark photo, so the logo keeps its own
+     ground rather than letting the page colour show through the globe. */
+  .cover__brand--logo img { width: 34mm; height: auto; background: #fff; padding: 3mm; border-radius: 4mm; box-shadow: 0 4mm 12mm rgba(0,0,0,.4); }
   .cover__brand b { font-size: 26pt; letter-spacing: .02em; line-height: 1; }
   .cover__brand b em { font-style: normal; color: #6fe07e; }
   .cover__brand small { display: block; font-size: 7.5pt; letter-spacing: .28em; color: #9fc9f5; margin-top: 5px; font-weight: 600; }
@@ -56,7 +58,7 @@
   /* ---------- INNER PAGES ---------- */
   .inner { padding: 16mm 18mm 20mm; }
   .phead { display: flex; align-items: center; gap: 10px; border-bottom: 3px solid #1fae4a; padding-bottom: 4mm; margin-bottom: 9mm; }
-  .phead img { width: 13mm; height: 12mm; }
+  .phead img { width: 14mm; height: auto; }
   .phead b { font-size: 13pt; color: #0a3a86; }
   .phead span { margin-left: auto; font-family: "Segoe Print", cursive; color: #12913f; font-size: 12pt; transform: rotate(-2deg); }
 
@@ -117,12 +119,8 @@
     <img src="../public/images/nepal-himalaya-sunset.jpg" alt="">
   </div>
   <div class="cover__inner">
-    <div class="cover__brand">
-      <img src="../public/assets/logo.svg" alt="">
-      <div>
-        <b>GL<em>CITY</em></b>
-        <small>TOURS AND TRAVELS PVT. LTD.</small>
-      </div>
+    <div class="cover__brand cover__brand--logo">
+      <img src="../public/assets/logo.jpg" alt="Global City Tours and Travels Pvt. Ltd.">
     </div>
     <div class="cover__mid">
       <div class="cover__kicker">your journey, our promise ✈</div>
@@ -149,7 +147,7 @@
 <!-- PAGE 2 — SERVICES + AIRLINES -->
 <section class="page inner">
   <div class="phead">
-    <img src="../public/assets/logo.svg" alt="">
+    <img src="../public/assets/logo-emblem.png" alt="">
     <b>Global City Tours and Travels Pvt. Ltd.</b>
     <span>what we do</span>
   </div>
@@ -184,7 +182,7 @@
 <!-- PAGE 3 — DESTINATIONS + PACKAGES + CONTACT -->
 <section class="page inner">
   <div class="phead">
-    <img src="../public/assets/logo.svg" alt="">
+    <img src="../public/assets/logo-emblem.png" alt="">
     <b>Global City Tours and Travels Pvt. Ltd.</b>
     <span>where we send you</span>
   </div>
