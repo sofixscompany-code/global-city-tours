@@ -15,7 +15,7 @@ export const company = {
   hours: 'Sunday – Friday : 9:00 AM – 6:00 PM',
   hoursShort: 'Sun – Fri : 9:00 AM – 6:00 PM',
   mapsUrl: 'https://maps.google.com/?q=Gokarneshwor-8+Attarkhel+Kathmandu',
-  brochure: '/assets/brochure.pdf',
+  brochure: '/assets/brochure.pdf?v=2',
 }
 
 export const navLinks = [
