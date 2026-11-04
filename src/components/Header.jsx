@@ -16,6 +16,15 @@ export default function Header({ activeSection }) {
   }, [])
 
   useEffect(() => {
+    // The drawer only exists up to 1180px. If the viewport grows past that
+    // (rotating a tablet), close it so the overlay and body scroll-lock
+    // can't be left on with an inline nav.
+    const onResize = () => window.innerWidth > 1180 && setOpen(false)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     const onKey = (event) => event.key === 'Escape' && setOpen(false)
     window.addEventListener('keydown', onKey)

@@ -154,7 +154,7 @@ a.topbar__item:hover{color:#fff}
   transition:box-shadow .3s var(--ease),background .3s;
 }
 .header.is-stuck{box-shadow:0 10px 34px rgba(10,42,107,.12)}
-.header__inner{display:flex;align-items:center;gap:16px;height:var(--header-h)}
+.header__inner{display:flex;align-items:center;gap:14px;height:var(--header-h)}
 
 /* flex:0 0 auto, NOT min-width:0 — the brand must never shrink below its
    nowrap text width. With min-width:0 it was the only squeezable item, so it
@@ -185,15 +185,18 @@ a.topbar__item:hover{color:#fff}
 }
 .brand__sub{font-size:.56rem;letter-spacing:.24em;font-weight:600;color:var(--blue-600);margin-top:5px;white-space:nowrap}
 
-.nav{display:flex;align-items:center;gap:18px;margin-left:auto}
+/* margin-inline (not margin-left): the leftover space splits evenly so the nav
+   floats balanced between the brand and the call button instead of hugging
+   whichever side has slack. In the drawer (fixed, margin:0) it's inert. */
+.nav{display:flex;align-items:center;gap:18px;margin-inline:auto}
 .nav__head,.nav__foot{display:none}
 .nav__list{display:flex;align-items:center;gap:4px}
 .nav__link{
-  position:relative;display:block;padding:9px 11px;border-radius:8px;white-space:nowrap;
-  font-size:.9rem;font-weight:500;color:var(--ink-2);transition:color .2s,background .2s;
+  position:relative;display:block;padding:9px 9px;border-radius:8px;white-space:nowrap;
+  font-size:.86rem;font-weight:500;color:var(--ink-2);transition:color .2s,background .2s;
 }
 .nav__link::after{
-  content:"";position:absolute;left:11px;right:11px;bottom:3px;height:2.5px;border-radius:3px;
+  content:"";position:absolute;left:9px;right:9px;bottom:3px;height:2.5px;border-radius:3px;
   background:var(--grad-green);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
 }
 .nav__link:hover{color:var(--blue-700)}
@@ -204,6 +207,13 @@ a.topbar__item:hover{color:#fff}
    under-sized, drop the nav's "Book Now" pill — the header already has call
    and WhatsApp buttons. The mobile drawer (<1180px) keeps its own CTA. */
 @media (min-width:1181px) and (max-width:1240px){.nav__cta{display:none}}
+
+/* Trimmed so the whole row (brand 263 + nav + CTA + call 127) fits inside the
+   1176px content width — at the old sizes it summed to 1212px and the buttons
+   hung 36px past the container edge, past the topbar's right alignment. */
+@media (min-width:1181px){
+  .nav__cta{--bh:42px;padding:0 15px;font-size:.86rem;gap:8px}
+}
 
 .header__actions{display:flex;align-items:center;gap:10px}
 /* The header sits on white, so the call button needs ink colours —
@@ -717,13 +727,16 @@ a.topbar__item:hover{color:#fff}
   .footer__grid{grid-template-columns:1.4fr 1fr 1fr;gap:32px}
   .footer__col--brand{grid-row:span 2}
   .grid--4{grid-template-columns:repeat(3,1fr)}
-  .nav__link{padding:9px 10px;font-size:.86rem}
-}
+  /* Hours are the first topbar item to go: with both phones, email, address
+     and hours the row needs 1092px and wraps to two lines below 1136px. */
+  .topbar__hours{display:none}
 
-@media (max-width:1024px){
-  :root{--header-h:70px}
+  /* The drawer takes over at 1180px, not 1024px. The inline row
+     brand + nav + CTA + call needs ~1130px of the 1176px content width, so
+     between 1025–1180px it overflowed by up to 197px and the Call Now button
+     sat completely off-screen (masked by overflow-x:clip). */
   /* backdrop-filter would make the header the containing block for the
-     fixed drawer, squashing it to header height — drop it on mobile. */
+     fixed drawer, squashing it to header height — drop it here. */
   .header{
     background:rgba(255,255,255,.98);
     -webkit-backdrop-filter:none;
@@ -731,6 +744,7 @@ a.topbar__item:hover{color:#fff}
   }
   .nav{
     position:fixed;top:0;right:0;bottom:0;width:min(340px,86vw);z-index:850;
+    margin:0;
     background:#fff;flex-direction:column;align-items:stretch;gap:0;
     padding:0 0 26px;box-shadow:-24px 0 70px rgba(4,32,77,.30);
     transform:translateX(105%);transition:transform .45s var(--ease);overflow-y:auto;
@@ -817,6 +831,17 @@ a.topbar__item:hover{color:#fff}
   /* Below the drawer's 850 so, when open, the drawer's own close button is the
      only X visible — at 860 the burger poked above it and duplicated it. */
   .burger{display:inline-flex;position:relative;z-index:840}
+  /* With the nav fixed, nothing in the row carries an auto margin anymore, so
+     brand + actions would pack left. Push the actions flush to the content
+     edge — they line up with the topbar's address on the right. */
+  .header__actions{margin-left:auto}
+}
+
+@media (max-width:1024px){
+  :root{--header-h:70px}
+  /* The drawer itself (backdrop, .nav, drawer head/list/foot, burger) moved into
+     the 1180px block above — the inline nav needs more width than this block's
+     breakpoint provides. Only the mobile call-button compaction stays here. */
   .header__call span{display:none}
   .header__call{padding:0;width:44px;height:44px;justify-content:center}
 
@@ -833,11 +858,22 @@ a.topbar__item:hover{color:#fff}
   .section{padding:76px 0}
 }
 
+@media (max-width:960px){
+  /* With hours already gone at 1180, email is next: phones + email + address
+     still need 862px and wrapped below 961px. */
+  .topbar__item--hide-md{display:none}
+}
+
 @media (max-width:860px){
-  .topbar__item--hide-md,.topbar__hours{display:none}
   .grid--4{grid-template-columns:repeat(2,1fr)}
   .ctaband__inner{flex-direction:column;text-align:center}
   .ctaband__actions{justify-content:center}
+}
+
+@media (max-width:560px){
+  /* Phone + address can't share a line below 561px — keep the number (the
+     call-to-action), the address lives in the footer and contact section. */
+  .topbar__group--end{display:none}
 }
 
 @media (max-width:680px){
@@ -882,6 +918,19 @@ a.topbar__item:hover{color:#fff}
   .footer__grid{grid-template-columns:1fr}
   .btn{padding:0 18px}
   .hero__stats{width:100%;justify-content:space-between}
+  /* Tight gutters so brand + buttons stay inside the ~316px content width —
+     the tracked sub-line is what sets the brand's width, so trim it too. */
+  .header__inner{gap:8px}
+  .brand{gap:10px}
+  .header__actions{gap:8px}
+  .brand__sub{font-size:.44rem;letter-spacing:.14em}
+}
+
+@media (max-width:355px){
+  /* Emblem-only on ultra-narrow phones: wordmark (196) + buttons (96) + gaps
+     need ~300px, which only fits from 356px up — below that a clipped burger
+     would lock the menu entirely. */
+  .brand__text{display:none}
 }
 
 /* print */
