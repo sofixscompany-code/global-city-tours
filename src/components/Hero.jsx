@@ -192,6 +192,15 @@ export default function Hero() {
               Get a Free Quote
               <Icon name="arrow" />
             </a>
+            <a
+              href={`https://wa.me/${company.phoneRaw[0]}?text=${encodeURIComponent('Hello Global City, I want a travel quote.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn--white btn--lg"
+            >
+              <Icon name="whatsapp" className="ico ico--wa" />
+              WhatsApp Us
+            </a>
             <a href={`tel:+${company.phoneRaw[0]}`} className="btn btn--white btn--lg">
               <Icon name="phone" />
               {company.phones[0]}

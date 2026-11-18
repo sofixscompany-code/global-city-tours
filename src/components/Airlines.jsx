@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react'
 import { airlines } from '../data/site.js'
+import { whatsAppLink } from '../lib/enquiry.js'
 import { Icon } from './Icon.jsx'
 
 const FILTERS = [
@@ -75,6 +76,17 @@ export default function Airlines() {
               <a href="tel:+9779851450530">+977 9851450530</a>.
             </span>
           </div>
+          <a
+            className="btn btn--green btn--sm airline-note__wa"
+            href={whatsAppLink(
+              'Hello Global City, please share the best fare for my route on any airline.',
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="whatsapp" />
+            Ask on WhatsApp
+          </a>
         </div>
       </div>
     </section>

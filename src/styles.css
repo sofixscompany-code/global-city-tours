@@ -136,14 +136,24 @@ button.link-arrow{background:none;border:0;padding:0;cursor:pointer;font-family:
 
 /* ---------- Top bar ---------- */
 .topbar{background:var(--blue-950);color:#cfe0f6;font-size:.83rem}
-.topbar__inner{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:42px;flex-wrap:wrap}
-.topbar__group{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.topbar__inner{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:42px;flex-wrap:wrap}
+.topbar__group{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .topbar__group--end{margin-left:auto}
 .topbar__item{display:inline-flex;align-items:center;gap:8px;transition:color .2s}
 .topbar__item .ico{width:15px;height:15px;color:var(--green-400)}
 a.topbar__item:hover{color:#fff}
 .topbar__hours{display:inline-flex;align-items:center;gap:8px;color:#9fbde3}
 .topbar__hours .ico{width:15px;height:15px;color:var(--green-400)}
+/* Icon-only WhatsApp chip: a text label would push the strip past its
+   1176px budget and wrap the topbar to two lines at every width. */
+.topbar__item--wa{
+  width:26px;height:26px;border-radius:50%;padding:0;flex:0 0 auto;
+  background:rgba(37,211,102,.18);color:#25d366;justify-content:center;
+  transition:background .2s,transform .2s;
+}
+.topbar__item--wa .ico{width:16px;height:16px;color:#25d366}
+.topbar__item--wa:hover{background:#25d366;color:#fff;transform:translateY(-1px)}
+a.topbar__item--wa:hover .ico{color:#fff}
 
 /* ---------- Header ---------- */
 .header{
@@ -426,6 +436,9 @@ a.topbar__item:hover{color:#fff}
 .service:hover .service__icon{transform:rotate(-8deg) scale(1.07)}
 .service h3{font-size:1.12rem;color:var(--blue-900);margin-bottom:10px}
 .service p{font-size:.9rem;margin-bottom:16px}
+.service__foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.service__wa{color:var(--green-700)}
+.service__wa:hover{color:var(--green-800)}
 
 /* ---------- Airlines ---------- */
 .filter{display:inline-flex;gap:6px;background:#fff;border:1px solid var(--line);padding:6px;border-radius:999px;margin-top:26px;box-shadow:var(--shadow-sm)}
@@ -464,6 +477,8 @@ a.topbar__item:hover{color:#fff}
 .airline-note strong{display:block;font-size:1rem;margin-bottom:2px}
 .airline-note span{font-size:.86rem;color:#cfe0f6}
 .airline-note a{color:#a9f0b6;font-weight:600;text-decoration:underline}
+.airline-note a.airline-note__wa{color:#fff;text-decoration:none;flex:0 0 auto;margin-left:auto}
+.airline-note a.airline-note__wa:hover{color:#fff}
 
 /* ---------- Destinations ---------- */
 .dests{gap:22px}
@@ -576,6 +591,7 @@ a.topbar__item:hover{color:#fff}
 .tst__item figcaption em{font-style:normal;font-size:.8rem;color:#66768e}
 .tst__stars{color:#f5a623;letter-spacing:2px;font-size:.95rem}
 .tst__nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:34px}
+.tst__cta{display:flex;justify-content:center;margin-top:26px}
 .tst__btn{
   width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--blue-700);
   display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);transition:.25s var(--ease);
@@ -598,6 +614,7 @@ a.topbar__item:hover{color:#fff}
 .faq{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
 .faq__head{position:sticky;top:130px}
 .faq__head .btn{margin-top:10px}
+.faq__actions{display:flex;flex-wrap:wrap;gap:10px}
 .faq__list{display:grid;gap:12px}
 .faq__item{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.3s var(--ease)}
 .faq__item[open]{box-shadow:var(--shadow);border-color:transparent}
@@ -911,6 +928,7 @@ a.topbar__item:hover{color:#fff}
   .tst__item figcaption > span:not(.tst__avatar):not(.tst__stars){align-items:center}
   .panelcard,.cinfo__card{padding:26px 22px}
   .airline-note{flex-direction:column;align-items:flex-start;gap:12px}
+  .airline-note a.airline-note__wa{margin-left:0}
   .nepal{padding:72px 0}
 }
 

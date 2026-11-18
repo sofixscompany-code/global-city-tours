@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { testimonials } from '../data/site.js'
+import { whatsAppLink } from '../lib/enquiry.js'
 import { Icon } from './Icon.jsx'
 
 export default function Testimonials() {
@@ -105,6 +106,20 @@ export default function Testimonials() {
             >
               <Icon name="arrow" />
             </button>
+          </div>
+
+          <div className="tst__cta">
+            <a
+              className="btn btn--green"
+              href={whatsAppLink(
+                'Hello Global City, I saw your reviews and want to book a trip.',
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="whatsapp" />
+              Book on WhatsApp
+            </a>
           </div>
         </div>
       </div>

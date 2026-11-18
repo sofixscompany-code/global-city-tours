@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { faqs } from '../data/site.js'
+import { whatsAppLink } from '../lib/enquiry.js'
 import { Icon } from './Icon.jsx'
 
 export default function Faq() {
@@ -25,10 +26,21 @@ export default function Faq() {
             Everything travellers usually ask us before booking. Still unsure? Call the office — we
             are happy to talk it through.
           </p>
-          <a href="#contact" className="btn btn--primary">
-            Ask a Question
-            <Icon name="arrow" />
-          </a>
+          <div className="faq__actions">
+            <a href="#contact" className="btn btn--primary">
+              Ask a Question
+              <Icon name="arrow" />
+            </a>
+            <a
+              className="btn btn--green"
+              href={whatsAppLink('Hello Global City, I have a question before I book.')}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="whatsapp" />
+              Chat on WhatsApp
+            </a>
+          </div>
         </div>
 
         <div className="faq__list reveal" ref={listRef}>

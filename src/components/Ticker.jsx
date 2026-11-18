@@ -11,6 +11,7 @@ const items = [
   'Travel Service',
   'Visa Guidance',
   '20+ Partner Airlines',
+  'Chat on WhatsApp',
 ]
 
 /** One identical pass of the list — rendered twice so the CSS marquee loops seamlessly. */
@@ -19,7 +20,7 @@ function Row() {
     <div className="ticker__row">
       {items.map((label) => (
         <span className="ticker__item" key={label}>
-          <Icon name="flight" className="ico" />
+          <Icon name={label === 'Chat on WhatsApp' ? 'whatsapp' : 'flight'} className="ico" />
           {label}
         </span>
       ))}

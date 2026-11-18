@@ -1,4 +1,5 @@
 import { services } from '../data/site.js'
+import { askOnWhatsApp } from '../lib/enquiry.js'
 import { Icon } from './Icon.jsx'
 
 export default function Services() {
@@ -25,10 +26,20 @@ export default function Services() {
               </div>
               <h3>{service.title}</h3>
               <p>{service.text}</p>
-              <a href={service.link.href} className="link-arrow">
-                {service.link.label}
-                <Icon name="arrow" />
-              </a>
+              <div className="service__foot">
+                <a href={service.link.href} className="link-arrow">
+                  {service.link.label}
+                  <Icon name="arrow" />
+                </a>
+                <button
+                  type="button"
+                  className="link-arrow service__wa"
+                  onClick={() => askOnWhatsApp(service.title)}
+                >
+                  <Icon name="whatsapp" />
+                  Ask on WhatsApp
+                </button>
+              </div>
             </article>
           ))}
         </div>

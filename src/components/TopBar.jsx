@@ -6,6 +6,16 @@ export default function TopBar() {
     <div className="topbar">
       <div className="container topbar__inner">
         <div className="topbar__group">
+          <a
+            href={`https://wa.me/${company.phoneRaw[0]}?text=${encodeURIComponent('Hello Global City, I have an enquiry.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="topbar__item topbar__item--wa"
+            aria-label="Chat with us on WhatsApp"
+            title="Chat on WhatsApp"
+          >
+            <Icon name="whatsapp" />
+          </a>
           <a href={`tel:+${company.phoneRaw[0]}`} className="topbar__item">
             <Icon name="phone" />
             {company.phones[0]}
