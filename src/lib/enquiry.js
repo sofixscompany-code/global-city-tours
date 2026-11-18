@@ -100,6 +100,8 @@ export function submitEnquiry(event, { onSuccess }) {
 
   onSuccess({
     ok: true,
-    message: `Thanks ${data.name || ''}! Your enquiry is ready in WhatsApp.`,
+    message: data.name
+      ? `Thanks ${data.name}! Your enquiry is ready in WhatsApp.`
+      : 'Thanks! Your enquiry is ready in WhatsApp.',
   })
 }
