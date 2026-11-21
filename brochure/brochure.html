@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Global City Tours and Travels Pvt. Ltd. — Company Brochure</title>
+    <!--
+      ============================================================================
+      Global City Tours and Travels — printed brochure (3 pages, A4)
+      ============================================================================
+      Source of truth for public/assets/brochure.pdf. To regenerate the PDF:
+
+        1. Open this file in Chrome (any modern Chrome works).
+        2. Ctrl/Cmd + P → Destination: "Save as PDF" → Paper: A4
+           → Margins: None → Background graphics: ON → Save.
+
+      Or run headless (from the temp opencode folder):
+
+        node render-brochure.mjs
+
+      Design notes
+      - Same tokens, fonts and icon sprite as the website so the brochure and
+        the site never drift apart visually.
+      - No emoji: every glyph is an inline SVG so print rendering is identical
+        on every machine.
+      - Each .page block is exactly 210mm x 297mm and hidden from overflow, so
+        content can never spill onto an unwanted fourth page.
+      ============================================================================
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,800&family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ---------- Tokens (mirrors src/styles.css) ---------- */
+      :root {
+        --blue-950: #04204d;
+        --blue-900: #0a2a6b;
+        --blue-800: #0a3a86;
+        --blue-700: #0d47a1;
+        --blue-600: #0f62c6;
+        --blue-500: #1580e8;
+        --blue-100: #e5f1fe;
+        --blue-50: #f2f8ff;
+        --green-800: #086330;
+        --green-700: #0b7a38;
+        --green-600: #12913f;
+        --green-500: #1fae4a;
+        --green-400: #3ecf4a;
+        --green-100: #e6f8ea;
+        --ink: #0b1b33;
+        --muted: #5b6b82;
+        --line: #e4ecf5;
+        --grad-blue-deep: linear-gradient(160deg, #062a63 0%, #0a3a86 48%, #0f62c6 100%);
+        --sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+        --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+        --script: 'Caveat', 'Segoe Script', cursive;
+      }
+
+      /* ---------- Page setup ---------- */
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      html,
+      body {
+        background: #fff;
+      }
+      body {
+        font-family: var(--sans);
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.6;
+      }
+      img {
+        display: block;
+      }
+      .ico {
+        width: 1em;
+        height: 1em;
+        fill: currentColor;
+        flex: 0 0 auto;
+      }
+      .page {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        page-break-after: always;
+        break-after: page;
+      }
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+      .page--inner {
+        padding: 13mm 15mm 9mm;
+      }
+
+      /* ---------- Shared bits ---------- */
+      .phead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 10px;
+        border-bottom: 2.5px solid var(--green-500);
+      }
+      .phead__brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .phead__brand img {
+        height: 30px;
+        width: auto;
+      }
+      .phead__name {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+      }
+      .phead__name b {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--blue-900);
+        letter-spacing: 0.01em;
+      }
+      .phead__name span {
+        font-size: 6.6px;
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        color: var(--blue-600);
+      }
+      .phead__script {
+        font-family: var(--script);
+        font-weight: 700;
+        font-size: 21px;
+        color: var(--green-500);
+        line-height: 1;
+      }
+      .sec__title {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 26px;
+        line-height: 1.15;
+        color: var(--blue-900);
+        letter-spacing: -0.01em;
+      }
+      .sec__lead {
+        font-size: 10.5px;
+        color: var(--muted);
+        margin-top: 5px;
+        max-width: 92%;
+      }
+      .pfoot {
+        margin-top: auto;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        font-size: 8.4px;
+        color: var(--muted);
+      }
+      .pfoot b {
+        color: var(--blue-900);
+        font-weight: 700;
+      }
+      .pfoot__mid {
+        color: var(--blue-600);
+        font-weight: 500;
+      }
+
+      /* ---------- Page 1 · Cover ---------- */
+      .cover {
+        color: #fff;
+        background: var(--blue-950) url('../public/images/nepal-himalaya-sunset.jpg') center 30% /
+          cover no-repeat;
+      }
+      .cover::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(102deg, rgba(4, 32, 77, 0.97) 0%, rgba(4, 32, 77, 0.9) 46%, rgba(10, 58, 134, 0.52) 100%),
+          linear-gradient(to top, rgba(4, 32, 77, 0.95) 0%, rgba(4, 32, 77, 0) 42%);
+      }
+      .cover__inner {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 14mm 15mm 0;
+      }
+      .cover__logo {
+        align-self: flex-start;
+        background: #fff;
+        border-radius: 18px;
+        padding: 12px 16px;
+        box-shadow: 0 18px 44px rgba(2, 14, 36, 0.4);
+      }
+      .cover__logo img {
+        height: 78px;
+        width: auto;
+      }
+      .cover__mid {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        padding-bottom: 8mm;
+        max-width: 660px;
+      }
+      .cover__kicker {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: var(--script);
+        font-weight: 700;
+        font-size: 26px;
+        color: var(--green-400);
+        line-height: 1;
+      }
+      .cover__kicker .ico {
+        font-size: 22px;
+      }
+      .cover__title {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 57px;
+        line-height: 1.04;
+        letter-spacing: -0.015em;
+        color: #fff;
+      }
+      .cover__title em {
+        font-style: normal;
+        color: var(--green-400);
+      }
+      .cover__lead {
+        font-size: 12px;
+        line-height: 1.85;
+        color: rgba(255, 255, 255, 0.84);
+        max-width: 560px;
+      }
+      .cover__chips {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        padding: 7px 15px;
+        font-size: 9.6px;
+        font-weight: 600;
+        color: #fff;
+      }
+      .chip .ico {
+        color: var(--green-400);
+        font-size: 12px;
+      }
+      .cover__foot {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 13px 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        font-size: 9px;
+        color: rgba(255, 255, 255, 0.88);
+      }
+      .cover__foot span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .cover__foot .ico {
+        color: var(--green-400);
+        font-size: 12px;
+      }
+      .cover__foot b {
+        font-weight: 600;
+        color: #fff;
+      }
+
+      /* ---------- Page 2 · Services + airlines ---------- */
+      .services {
+        margin-top: 9mm;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .svc {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        padding: 17px 18px 16px;
+        box-shadow: 0 4px 14px rgba(10, 42, 107, 0.05);
+      }
+      .svc__ico {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: var(--blue-100);
+        color: var(--blue-600);
+        display: grid;
+        place-items: center;
+        font-size: 17px;
+      }
+      .svc h3 {
+        font-size: 11.6px;
+        font-weight: 700;
+        color: var(--blue-900);
+        margin-top: 10px;
+        line-height: 1.35;
+      }
+      .svc p {
+        font-size: 8.9px;
+        line-height: 1.62;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+      .airlines {
+        margin-top: 9mm;
+      }
+      .airlines__head {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .airlines__head h3 {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 16px;
+        color: var(--blue-900);
+      }
+      .airlines__head p {
+        font-size: 9.2px;
+        color: var(--muted);
+      }
+      .airlines__label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 7.6px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin: 11px 0 7px;
+      }
+      .airlines__label::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--line);
+      }
+      .airlines__label--dom {
+        color: var(--green-600);
+      }
+      .airlines__label--intl {
+        color: var(--blue-600);
+      }
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .pill {
+        font-size: 8.6px;
+        font-weight: 500;
+        padding: 4.5px 11px;
+        border-radius: 999px;
+        border: 1px solid;
+        line-height: 1.4;
+      }
+      .pill--dom {
+        background: var(--green-100);
+        border-color: #cfedda;
+        color: var(--green-700);
+      }
+      .pill--intl {
+        background: var(--blue-50);
+        border-color: #d9e9fb;
+        color: var(--blue-800);
+      }
+      .why {
+        margin-top: 8mm;
+      }
+      .why h3 {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 16px;
+        color: var(--blue-900);
+        margin-bottom: 10px;
+      }
+      .why__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .why__item {
+        border-top: 2.5px solid var(--green-500);
+        padding-top: 9px;
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+      }
+      .why__ico {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        background: var(--blue-100);
+        color: var(--blue-600);
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        flex: 0 0 auto;
+      }
+      .why__t b {
+        display: block;
+        font-size: 9.6px;
+        font-weight: 700;
+        color: var(--blue-900);
+        line-height: 1.3;
+      }
+      .why__t span {
+        display: block;
+        font-size: 8.2px;
+        color: var(--muted);
+        margin-top: 2px;
+        line-height: 1.5;
+      }
+
+      /* ---------- Page 3 · Destinations + packages + contact ---------- */
+      .dests {
+        margin-top: 8mm;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 11px;
+      }
+      .dest {
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 4px 14px rgba(10, 42, 107, 0.05);
+      }
+      .dest img {
+        width: 100%;
+        height: 88px;
+        object-fit: cover;
+      }
+      .dest__t {
+        padding: 8px 10px 9px;
+      }
+      .dest__t b {
+        display: block;
+        font-size: 10.6px;
+        font-weight: 700;
+        color: var(--blue-900);
+        line-height: 1.3;
+      }
+      .dest__t span {
+        display: block;
+        font-size: 8.2px;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+      .pkgs {
+        margin-top: 7.5mm;
+      }
+      .pkgs h3 {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 16px;
+        color: var(--blue-900);
+      }
+      .pkgs__grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 9px;
+      }
+      .pkg {
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--green-500);
+        border-radius: 11px;
+        background: #fff;
+        padding: 9px 13px 10px;
+      }
+      .pkg__badge {
+        font-size: 7px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--green-600);
+      }
+      .pkg__badge--hot {
+        color: var(--blue-600);
+      }
+      .pkg b {
+        display: block;
+        font-size: 11.4px;
+        font-weight: 700;
+        color: var(--blue-900);
+        margin-top: 1px;
+        line-height: 1.3;
+      }
+      .pkg p {
+        font-size: 8.6px;
+        color: var(--muted);
+        margin-top: 3px;
+        line-height: 1.55;
+      }
+      .book {
+        margin-top: 7.5mm;
+        background: var(--grad-blue-deep);
+        border-radius: 16px;
+        color: #fff;
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        box-shadow: 0 16px 40px rgba(10, 42, 107, 0.28);
+      }
+      .book__text {
+        flex: 1;
+      }
+      .book__text h3 {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 20px;
+        line-height: 1.2;
+      }
+      .book__text h3 em {
+        font-style: normal;
+        color: var(--green-400);
+      }
+      .book__rows {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px 18px;
+        margin-top: 9px;
+      }
+      .book__row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 9.2px;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.4;
+      }
+      .book__row .ico {
+        color: var(--green-400);
+        font-size: 12px;
+      }
+      .book__row b {
+        color: #fff;
+        font-weight: 600;
+      }
+      .book__qr {
+        flex: 0 0 auto;
+        text-align: center;
+      }
+      .book__qrBox {
+        background: #fff;
+        border-radius: 12px;
+        padding: 7px;
+        width: 96px;
+        height: 96px;
+      }
+      .book__qrBox img {
+        width: 100%;
+        height: 100%;
+      }
+      .book__qr figcaption {
+        font-size: 7.6px;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.85);
+        margin-top: 6px;
+        max-width: 118px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Icon sprite (same paths as src/components/Icon.jsx) -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden" aria-hidden="true">
+      <defs>
+        <symbol id="i-flight" viewBox="0 0 24 24">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+        </symbol>
+        <symbol id="i-hotel" viewBox="0 0 24 24">
+          <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z" />
+        </symbol>
+        <symbol id="i-cargo" viewBox="0 0 24 24">
+          <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+        </symbol>
+        <symbol id="i-luggage" viewBox="0 0 24 24">
+          <path d="M17 6V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3zM9 4h6v2H9V4zm11 15H4v-2h16v2zm0-5H4V8h3v2h2V8h6v2h2V8h3v6z" />
+        </symbol>
+        <symbol id="i-map" viewBox="0 0 24 24">
+          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z" />
+        </symbol>
+        <symbol id="i-public" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+        </symbol>
+        <symbol id="i-phone" viewBox="0 0 24 24">
+          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+        </symbol>
+        <symbol id="i-mail" viewBox="0 0 24 24">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+        </symbol>
+        <symbol id="i-pin" viewBox="0 0 24 24">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+        </symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24">
+          <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+        </symbol>
+        <symbol id="i-whatsapp" viewBox="0 0 24 24">
+          <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.48-.15-.67.15-.2.3-.77.97-.95 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.27-.2-.57-.34M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.43 9.89-9.88 9.89m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41" />
+        </symbol>
+        <symbol id="i-globe" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+        </symbol>
+        <symbol id="i-star" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- ============ PAGE 1 · COVER ============ -->
+    <section class="page cover">
+      <div class="cover__inner">
+        <div class="cover__logo">
+          <img src="../public/assets/logo.jpg" alt="Global City Tours and Travels Pvt. Ltd." />
+        </div>
+
+        <div class="cover__mid">
+          <div class="cover__kicker">
+            your journey, our promise
+            <svg class="ico" aria-hidden="true"><use href="#i-flight" /></svg>
+          </div>
+          <h1 class="cover__title">Travel <em>Beyond</em><br />Boundaries.</h1>
+          <p class="cover__lead">
+            Domestic &amp; international air ticketing · hotel booking · holiday &amp; tour packages ·
+            cargo and courier — a complete travel service from the heart of Kathmandu, trusted by
+            hundreds of travellers.
+          </p>
+          <div class="cover__chips">
+            <span class="chip"><svg class="ico" aria-hidden="true"><use href="#i-flight" /></svg>20+ Airline Partners</span>
+            <span class="chip"><svg class="ico" aria-hidden="true"><use href="#i-pin" /></svg>12+ Destinations</span>
+            <span class="chip"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg>6 Core Services</span>
+          </div>
+        </div>
+
+        <div class="cover__foot">
+          <span><svg class="ico" aria-hidden="true"><use href="#i-pin" /></svg><b>Gokarneshwor-8, Attarkhel, Kathmandu</b>, Nepal</span>
+          <span><svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg><b>+977 9851150530</b> · +977 9851450530</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PAGE 2 · SERVICES + AIRLINES ============ -->
+    <section class="page page--inner">
+      <header class="phead">
+        <div class="phead__brand">
+          <img src="../public/assets/logo-emblem.png" alt="" />
+          <span class="phead__name">
+            <b>Global City</b>
+            <span>TOURS AND TRAVELS PVT.LTD.</span>
+          </span>
+        </div>
+        <span class="phead__script">what we do</span>
+      </header>
+
+      <div style="margin-top: 8mm">
+        <h2 class="sec__title">Everything travel, under one roof</h2>
+        <p class="sec__lead">
+          One call handles your tickets, hotels, itinerary, safari, pilgrimage — and even the cargo at
+          the other end.
+        </p>
+      </div>
+
+      <div class="services">
+        <article class="svc">
+          <div class="svc__ico"><svg class="ico" aria-hidden="true"><use href="#i-flight" /></svg></div>
+          <h3>Domestic &amp; International Air Ticketing</h3>
+          <p>Instant bookings across 6 domestic and 14 international carriers, with fare comparison, group discounts and 24×7 re-issue support.</p>
+        </article>
+        <article class="svc">
+          <div class="svc__ico"><svg class="ico" aria-hidden="true"><use href="#i-hotel" /></svg></div>
+          <h3>Hotel Booking</h3>
+          <p>Budget guesthouses to 5-star stays, in Nepal and worldwide. Handpicked properties, confirmed vouchers and best-rate matching.</p>
+        </article>
+        <article class="svc">
+          <div class="svc__ico"><svg class="ico" aria-hidden="true"><use href="#i-cargo" /></svg></div>
+          <h3>Cargo and Courier Service</h3>
+          <p>Air cargo and courier movement to and from Nepal with secure handling, door-to-door pickup and real-time shipment updates.</p>
+        </article>
+        <article class="svc">
+          <div class="svc__ico"><svg class="ico" aria-hidden="true"><use href="#i-luggage" /></svg></div>
+          <h3>Holiday Packages</h3>
+          <p>Ready-to-go holidays for couples, families and groups — flights, hotels, sightseeing and meals bundled into one simple price.</p>
+        </article>
+        <article class="svc">
+          <div class="svc__ico"><svg class="ico" aria-hidden="true"><use href="#i-map" /></svg></div>
+          <h3>All Types of Tour Packages</h3>
+          <p>Adventure, pilgrimage, wildlife, honeymoon and corporate tours — designed around your dates, budget and travel style.</p>
+        </article>
+        <article class="svc">
+          <div class="svc__ico"><svg class="ico" aria-hidden="true"><use href="#i-public" /></svg></div>
+          <h3>Domestic &amp; International Travel Service</h3>
+          <p>Visa assistance, airport transfers, travel insurance, SIM cards and itinerary planning — a complete door-to-door travel service.</p>
+        </article>
+      </div>
+
+      <div class="airlines">
+        <div class="airlines__head">
+          <h3>Airline Partners</h3>
+          <p>— compare fares across all of them in one call</p>
+        </div>
+
+        <div class="airlines__label airlines__label--dom">Domestic · 6</div>
+        <div class="pills">
+          <span class="pill pill--dom">Tara Air</span>
+          <span class="pill pill--dom">Buddha Air</span>
+          <span class="pill pill--dom">Shree Airlines</span>
+          <span class="pill pill--dom">Yeti Airlines</span>
+          <span class="pill pill--dom">Sita Air</span>
+          <span class="pill pill--dom">Saurya Airlines</span>
+        </div>
+
+        <div class="airlines__label airlines__label--intl">International · 14</div>
+        <div class="pills">
+          <span class="pill pill--intl">Qatar Airways</span>
+          <span class="pill pill--intl">Emirates</span>
+          <span class="pill pill--intl">Nepal Airlines</span>
+          <span class="pill pill--intl">Thai Airways</span>
+          <span class="pill pill--intl">Himalaya Airlines</span>
+          <span class="pill pill--intl">flydubai</span>
+          <span class="pill pill--intl">Malaysia Airlines</span>
+          <span class="pill pill--intl">Air India</span>
+          <span class="pill pill--intl">Air Arabia</span>
+          <span class="pill pill--intl">Jazeera Airways</span>
+          <span class="pill pill--intl">IndiGo</span>
+          <span class="pill pill--intl">Singapore Airlines</span>
+          <span class="pill pill--intl">Kuwait Airways</span>
+          <span class="pill pill--intl">Oman Air</span>
+        </div>
+      </div>
+
+      <div class="why">
+        <h3>Why travellers choose us</h3>
+        <div class="why__grid">
+          <div class="why__item">
+            <div class="why__ico"><svg class="ico" aria-hidden="true"><use href="#i-star" /></svg></div>
+            <div class="why__t"><b>Competitive Fares</b><span>Negotiated rates with 20+ carriers</span></div>
+          </div>
+          <div class="why__item">
+            <div class="why__ico"><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg></div>
+            <div class="why__t"><b>Fast Processing</b><span>Tickets &amp; vouchers in minutes</span></div>
+          </div>
+          <div class="why__item">
+            <div class="why__ico"><svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg></div>
+            <div class="why__t"><b>Always Reachable</b><span>Phone, WhatsApp or walk-in</span></div>
+          </div>
+          <div class="why__item">
+            <div class="why__ico"><svg class="ico" aria-hidden="true"><use href="#i-shield" /></svg></div>
+            <div class="why__t"><b>Trusted &amp; Transparent</b><span>Clear prices, no hidden mark-ups</span></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="pfoot">
+        <b>Travel Beyond Boundaries.</b>
+        <span class="pfoot__mid">globalcitytraveltours@gmail.com · www.globalcitytours.com.np</span>
+        <span>Page 2 of 3</span>
+      </footer>
+    </section>
+
+    <!-- ============ PAGE 3 · DESTINATIONS + PACKAGES + CONTACT ============ -->
+    <section class="page page--inner">
+      <header class="phead">
+        <div class="phead__brand">
+          <img src="../public/assets/logo-emblem.png" alt="" />
+          <span class="phead__name">
+            <b>Global City</b>
+            <span>TOURS AND TRAVELS PVT.LTD.</span>
+          </span>
+        </div>
+        <span class="phead__script">where we send you</span>
+      </header>
+
+      <div style="margin-top: 8mm">
+        <h2 class="sec__title">Popular Destinations</h2>
+        <p class="sec__lead">
+          Short hops to Pokhara and Chitwan, or long-haul escapes to Dubai, Bangkok, Seoul and beyond.
+        </p>
+      </div>
+
+      <div class="dests">
+        <article class="dest">
+          <img src="../public/images/dest-dubai.jpg" alt="The Burj Al Arab standing on the Dubai coastline" />
+          <div class="dest__t"><b>Dubai</b><span>United Arab Emirates</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-thailand.jpg" alt="Long-tail boats on a beach in Krabi, Thailand" />
+          <div class="dest__t"><b>Thailand</b><span>Bangkok &amp; Phuket</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-korea.jpg" alt="Seoul city lights at dusk with mountains behind" />
+          <div class="dest__t"><b>Korea</b><span>Seoul &amp; Beyond</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-bahrain.jpg" alt="Bahrain World Trade Center and the Manama skyline at sunset" />
+          <div class="dest__t"><b>Bahrain</b><span>Manama</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-usa.jpg" alt="The Statue of Liberty against a clear blue sky" />
+          <div class="dest__t"><b>USA</b><span>New York &amp; Beyond</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-uk.jpg" alt="Aerial view of Tower Bridge and the River Thames in London" />
+          <div class="dest__t"><b>UK</b><span>London</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-china.jpg" alt="The Shanghai Pudong skyline reflected in the Huangpu River" />
+          <div class="dest__t"><b>China</b><span>Shanghai &amp; Beyond</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-india.jpg" alt="The Taj Mahal and its reflecting pool in Agra" />
+          <div class="dest__t"><b>India</b><span>Agra, Delhi &amp; More</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-japan.jpg" alt="A pagoda on a traditional street in Kyoto, Japan" />
+          <div class="dest__t"><b>Japan</b><span>Tokyo &amp; Kyoto</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-qatar.jpg" alt="The Doha skyline seen across the bay in Qatar" />
+          <div class="dest__t"><b>Qatar</b><span>Doha</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-malaysia.jpg" alt="The Petronas Twin Towers in Kuala Lumpur" />
+          <div class="dest__t"><b>Malaysia</b><span>Kuala Lumpur</span></div>
+        </article>
+        <article class="dest">
+          <img src="../public/images/dest-singapore.jpg" alt="Marina Bay Sands and the Singapore skyline" />
+          <div class="dest__t"><b>Singapore</b><span>Garden City</span></div>
+        </article>
+      </div>
+
+      <div class="pkgs">
+        <h3>Featured Tour Packages</h3>
+        <div class="pkgs__grid">
+          <article class="pkg">
+            <span class="pkg__badge">International</span>
+            <b>USA Discovery</b>
+            <p>Air ticketing from Kathmandu · hotels with daily breakfast · city tours &amp; transfers</p>
+          </article>
+          <article class="pkg">
+            <span class="pkg__badge pkg__badge--hot">Most Booked</span>
+            <b>Dubai Escapade</b>
+            <p>Desert safari &amp; Dhow cruise · Burj Khalifa tour · 4★ hotel + transfers</p>
+          </article>
+          <article class="pkg">
+            <span class="pkg__badge">Nepal · 3N / 4D</span>
+            <b>Pokhara &amp; Sarangkot</b>
+            <p>Sarangkot sunrise, Phewa boating · hotel with breakfast · family favourite</p>
+          </article>
+          <article class="pkg">
+            <span class="pkg__badge">Nepal · 2N / 3D</span>
+            <b>Chitwan Wildlife Safari</b>
+            <p>Jungle safari &amp; canoe ride · full board resort · Tharu cultural program</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="book">
+        <div class="book__text">
+          <h3>Book in <em>one message</em></h3>
+          <div class="book__rows">
+            <span class="book__row"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp" /></svg><b>WhatsApp +977 9851150530</b></span>
+            <span class="book__row"><svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg>+977 9851150530 · +977 9851450530</span>
+            <span class="book__row"><svg class="ico" aria-hidden="true"><use href="#i-mail" /></svg>globalcitytraveltours@gmail.com</span>
+            <span class="book__row"><svg class="ico" aria-hidden="true"><use href="#i-clock" /></svg>Sun – Fri : 9:00 AM – 6:00 PM</span>
+            <span class="book__row" style="grid-column: 1 / -1"
+              ><svg class="ico" aria-hidden="true"><use href="#i-pin" /></svg>Gokarneshwor-8, Attarkhel, Kathmandu, Nepal</span
+            >
+          </div>
+        </div>
+        <figure class="book__qr">
+          <div class="book__qrBox"><img src="../public/images/whatsapp-qr.png" alt="WhatsApp QR code" /></div>
+          <figcaption>Scan to chat on WhatsApp</figcaption>
+        </figure>
+      </div>
+
+      <footer class="pfoot">
+        <b>Travel Beyond Boundaries.</b>
+        <span class="pfoot__mid">globalcitytraveltours@gmail.com · www.globalcitytours.com.np</span>
+        <span>Page 3 of 3</span>
+      </footer>
+    </section>
+  </body>
+</html>
