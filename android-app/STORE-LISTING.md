@@ -18,7 +18,7 @@ Everything you need to paste into Play Console. Package: **com.globalcitytours.t
 | Content rating | Everyone |
 | Website | https://global-city-tours.vercel.app/ |
 | Email | globalcitytraveltours@gmail.com |
-| Privacy policy URL | https://global-city-tours.vercel.app/ (site footer; add a dedicated /privacy page if asked) |
+| Privacy policy URL | https://global-city-tours.vercel.app/privacy.html |
 
 ### Short description (max 80 chars)
 
