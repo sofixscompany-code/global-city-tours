@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="176dp"
         android:layout_height="122dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/splash_logo"
         android:contentDescription="@string/app_name" />
 
     <TextView
