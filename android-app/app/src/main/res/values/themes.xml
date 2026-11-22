@@ -8,12 +8,14 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/navy_deep</item>
         <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 
     <style name="Theme.GlobalCity.Splash">
         <item name="android:windowBackground">@drawable/splash_bg</item>
         <item name="android:statusBarColor">@color/navy_deep</item>
         <item name="android:navigationBarColor">@color/navy_deep</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 
 </resources>

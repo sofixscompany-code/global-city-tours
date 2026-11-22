@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 /**
  * Branded splash — shows the emblem, the app name and the "Powered by Sofixs"
@@ -26,6 +27,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Keep the app out of the status/navigation bar area so the net/wifi
+        // icons never overlap the splash content on edge-to-edge devices.
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
         setContentView(R.layout.activity_splash);
         handler.postDelayed(go, SPLASH_MS);
     }
