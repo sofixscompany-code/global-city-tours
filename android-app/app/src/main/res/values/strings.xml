@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Global City Tours</string>
+    <string name="app_full_name">Global City Tours and Travels Pvt. Ltd.</string>
+    <string name="powered_by">Powered by Sofixs</string>
+    <string name="tagline">Travel Beyond Boundaries.</string>
+    <string name="retry">Retry</string>
+    <string name="offline_title">You&#8217;re offline</string>
+    <string name="offline_msg">Check your internet connection and try again.</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="about_title">About this app</string>
+    <string name="about_body">Official app of Global City Tours and Travels Pvt. Ltd. — domestic &amp; international air ticketing, hotel booking, holiday packages and cargo from Kathmandu, Nepal.</string>
+    <string name="version_label">Version</string>
+</resources>
