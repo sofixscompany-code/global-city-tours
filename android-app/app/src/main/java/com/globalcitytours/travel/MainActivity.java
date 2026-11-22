@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -20,19 +22,27 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+
 /**
  * Loads the live Global City Tours site in a WebView.
  *
  * Behaviour kept intentionally simple so it feels native:
  *  - horizontal progress bar while pages load
  *  - back button walks the page history instead of exiting
- *  - WhatsApp / tel / mail / foreign links leave the app (external handlers)
+ *  - WhatsApp / tel / mail / foreign links leave the app (external handlers),
+ *    including target=_blank / window.open links (routed via onCreateWindow)
+ *  - the brochure modal's PDF iframe can't render inside a WebView, so the
+ *    iframe request is answered with a branded "Open brochure" panel that
+ *    hands the PDF to the device's PDF viewer
  *  - a branded offline screen with Retry when the network is gone
  *  - About dialog credits "Powered by Sofixs"
  */
 public class MainActivity extends AppCompatActivity {
 
     private static final String HOME_URL = "https://global-city-tours.vercel.app/";
+    private static final String SITE_HOST = "global-city-tours.vercel.app";
 
     private WebView web;
     private ProgressBar progress;
@@ -56,13 +66,37 @@ public class MainActivity extends AppCompatActivity {
         settings.setUseWideViewPort(true);
         settings.setBuiltInZoomControls(false);
         settings.setSupportZoom(false);
+        settings.setSupportMultipleWindows(true);
         settings.setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setCacheMode(android.webkit.WebSettings.LOAD_DEFAULT);
 
+        // PDFs (brochure) cannot render inside a WebView — hand them over.
+        web.setDownloadListener((url, ua, disposition, mime, length) -> {
+            android.util.Log.i("GCApp", "download: " + url + " mime=" + mime);
+            if (url != null) openExternally(Uri.parse(url));
+        });
+
         web.setWebViewClient(new WebViewClient() {
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest req) {
-                return handleUri(req.getUrl());
+                return route(req.getUrl());
+            }
+
+            // The brochure modal embeds the PDF in an iframe. WebView has no
+            // PDF engine, so answer that request with a small branded panel
+            // whose button opens the PDF in the top frame (-> external viewer).
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest req) {
+                String url = req.getUrl().toString();
+                android.util.Log.i("GCApp", "intercept: " + url);
+                if (url.contains(".pdf")) {
+                    byte[] html = brochurePanel(url).getBytes(StandardCharsets.UTF_8);
+                    android.util.Log.i("GCApp", "serving brochure panel");
+                    return new WebResourceResponse("text/html", "utf-8",
+                            new ByteArrayInputStream(html));
+                }
+                return super.shouldInterceptRequest(view, req);
             }
 
             @Override
@@ -92,6 +126,26 @@ public class MainActivity extends AppCompatActivity {
                 progress.setProgress(newProgress);
                 if (newProgress >= 100) progress.setVisibility(View.INVISIBLE);
             }
+
+            // target=_blank / window.open: capture the new window and route
+            // each URL either back into this WebView or out to another app.
+            @Override
+            public boolean onCreateWindow(WebView view, boolean isDialog,
+                                          boolean isUserGesture, Message resultMsg) {
+                var transport = (WebView.WebViewTransport) resultMsg.obj;
+                var probe = new WebView(view.getContext());
+                probe.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest r) {
+                        route(r.getUrl());
+                        return true;
+                    }
+                });
+                probe.getSettings().setJavaScriptEnabled(true);
+                transport.setWebView(probe);
+                resultMsg.sendToTarget();
+                return true;
+            }
         });
 
         retry.setOnClickListener(v -> {
@@ -107,18 +161,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /** Routes a URL either into the WebView or out to an external handler. */
-    private boolean handleUri(Uri uri) {
-        if (uri == null) return false;
+    /** Decides where a URL goes: external app, PDF viewer, or this WebView. */
+    private boolean route(Uri uri) {
+        if (uri == null) return true;
         String scheme = uri.getScheme() == null ? "" : uri.getScheme().toLowerCase();
         String host = uri.getHost() == null ? "" : uri.getHost().toLowerCase();
+        String url = uri.toString().toLowerCase();
+
+        // PDFs always go to the device's viewer — WebView can't show them.
+        if (url.contains(".pdf")) {
+            openExternally(uri);
+            return true;
+        }
 
         boolean externalScheme = scheme.equals("whatsapp") || scheme.equals("tel")
                 || scheme.equals("mailto") || scheme.equals("sms") || scheme.equals("intent");
 
-        boolean sameSite = host.endsWith("global-city-tours.vercel.app")
-                || host.endsWith("globalcitytours.com.np")
-                || host.equals("www.google.com") && uri.getPath().startsWith("/maps");
+        boolean sameSite = host.equals(SITE_HOST)
+                || host.endsWith("." + SITE_HOST)
+                || host.endsWith("globalcitytours.com.np");
 
         if (externalScheme || (!sameSite && !scheme.equals("https") && !scheme.equals("http"))) {
             openExternally(uri);
@@ -137,6 +198,25 @@ public class MainActivity extends AppCompatActivity {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No app found to open this link", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /** Served into the brochure modal's iframe in place of the raw PDF. */
+    private String brochurePanel(String pdfUrl) {
+        String safe = pdfUrl.replace("\"", "%22");
+        return "<!DOCTYPE html><html><head><meta charset=\"utf-8\">"
+                + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+                + "<style>body{margin:0;min-height:100vh;display:flex;align-items:center;"
+                + "justify-content:center;text-align:center;padding:24px;"
+                + "background:linear-gradient(160deg,#062a63,#0a3a86 48%,#0f62c6);"
+                + "font-family:system-ui,-apple-system,sans-serif;color:#fff}"
+                + "h1{font-size:19px;margin:0 0 8px}p{font-size:14px;opacity:.85;margin:0 0 22px}"
+                + "a{display:inline-block;background:#1fae4a;color:#fff;font-weight:700;"
+                + "font-size:16px;padding:14px 32px;border-radius:999px;text-decoration:none}"
+                + "small{display:block;margin-top:16px;opacity:.65;font-size:12px}</style></head>"
+                + "<body><div><h1>Global City — Brochure</h1>"
+                + "<p>3 pages · services, airlines, destinations &amp; contacts</p>"
+                + "<a href=\"" + safe + "\" target=\"_top\">Open brochure</a>"
+                + "<small>Opens in your PDF viewer</small></div></body></html>";
     }
 
     private boolean isOnline() {
