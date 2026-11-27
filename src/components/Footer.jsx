@@ -1,4 +1,4 @@
-import { company, navLinks, services, destinations } from '../data/site.js'
+import { company, navLinks, services, destinations, socialLinks } from '../data/site.js'
 import { Icon } from './Icon.jsx'
 import { usePdfPreview } from './PdfPreview.jsx'
 
@@ -35,6 +35,11 @@ export default function Footer() {
               <a href={`https://wa.me/${company.phoneRaw[0]}`} aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
                 <Icon name="whatsapp" />
               </a>
+              {socialLinks.map((link) => (
+                <a key={link.name} href={link.href} aria-label={link.name} target="_blank" rel="noopener noreferrer">
+                  <Icon name={link.name.toLowerCase()} />
+                </a>
+              ))}
               <a href={`mailto:${company.email}`} aria-label="Email">
                 <Icon name="mail" />
               </a>

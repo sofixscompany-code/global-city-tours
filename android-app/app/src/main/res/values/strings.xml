@@ -11,4 +11,7 @@
     <string name="about_title">About this app</string>
     <string name="about_body">Official app of Global City Tours and Travels Pvt. Ltd. — domestic &amp; international air ticketing, hotel booking, holiday packages and cargo from Kathmandu, Nepal.</string>
     <string name="version_label">Version</string>
+    <string name="follow_us">Follow us</string>
+    <string name="facebook">Facebook</string>
+    <string name="tiktok">TikTok</string>
 </resources>

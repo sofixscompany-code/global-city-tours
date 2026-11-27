@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String HOME_URL = "https://global-city-tours.vercel.app/";
     private static final String SITE_HOST = "global-city-tours.vercel.app";
+    private static final String FACEBOOK_URL =
+            "https://www.facebook.com/profile.php?id=61595866479874";
+    private static final String TIKTOK_URL =
+            "https://www.tiktok.com/@globalcitytourstravels?lang=en";
 
     private WebView web;
     private ProgressBar progress;
@@ -259,8 +263,14 @@ public class MainActivity extends AppCompatActivity {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.about_title)
                     .setMessage(getString(R.string.about_body)
-                            + "\n\n" + getString(R.string.version_label) + " " + version
+                            + "\n\n" + getString(R.string.follow_us) + ": "
+                            + getString(R.string.facebook) + " · " + getString(R.string.tiktok)
+                            + "\n" + getString(R.string.version_label) + " " + version
                             + "\n" + getString(R.string.powered_by))
+                    .setNegativeButton(R.string.facebook,
+                            (dialog, which) -> openExternally(Uri.parse(FACEBOOK_URL)))
+                    .setNeutralButton(R.string.tiktok,
+                            (dialog, which) -> openExternally(Uri.parse(TIKTOK_URL)))
                     .setPositiveButton(android.R.string.ok, null)
                     .show();
             return true;

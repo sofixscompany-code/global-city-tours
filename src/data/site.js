@@ -18,6 +18,11 @@ export const company = {
   brochure: '/assets/brochure.pdf?v=3',
 }
 
+export const socialLinks = [
+  { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61595866479874' },
+  { name: 'TikTok', href: 'https://www.tiktok.com/@globalcitytourstravels?lang=en' },
+]
+
 export const navLinks = [
   { href: '#home', label: 'Home' },
   { href: '#about', label: 'About Us' },
